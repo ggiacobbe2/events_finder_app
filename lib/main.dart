@@ -51,24 +51,27 @@ class _EventsHomePageState extends State<EventsHomePage> {
       body: Center(
         child: Column(
           children: [
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Search',
-                border: OutlineInputBorder(),
+            Padding(
+              padding: EdgeInsets.all(30.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
-              },
             ),
             SizedBox(height: 10),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 3,
-                padding: EdgeInsets.all(130), // padding around the grid
-                crossAxisSpacing: 10, // space between columns
-                mainAxisSpacing: 10,  // space between rows
+                padding: EdgeInsets.all(30), // padding around the grid
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
                 children: filteredCategories.map((category) {
                   return InkWell(
                     onTap: () {
