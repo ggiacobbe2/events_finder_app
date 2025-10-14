@@ -4,13 +4,6 @@ void main() {
   runApp(MyApp());
 }
 
-class Event {
-  final String title;
-  final String date;
-
-  Event(this.title, this.date);
-}
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -32,19 +25,25 @@ class EventsHomePage extends StatefulWidget {
 class _EventsHomePageState extends State<EventsHomePage> {
   String searchQuery = '';
 
-  List<Event> events = [ // placeholder events
-    Event('Event 1', '10-14-2025'),
-    Event('Event 2', '10-31-2025'),
-    Event('Event 3', '11-08-2025'),
-    Event('Event 4', '12-20-2025'),
+  final List<String> categories = [
+    'Sports & Fitness',
+    'Food',
+    'Nightlife',
+    'Lifestyle',
+    'Post an Event!',
+    'Education',
+    'Family',
+    'Professional',
+    'Music & Art',
   ];
 
   @override
   Widget build(BuildContext context) {
-    List<Event> filteredEvents = events
-        .where((event) =>
-            event.title.toLowerCase().contains(searchQuery.toLowerCase()))
+    final filteredCategories = categories
+        .where((category) =>
+            category.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Nearby Events Finder'),
@@ -65,20 +64,56 @@ class _EventsHomePageState extends State<EventsHomePage> {
             ),
             SizedBox(height: 10),
             Expanded(
-              child: ListView.builder(
-                itemCount: filteredEvents.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(filteredEvents[index].title),
-                      subtitle: Text(filteredEvents[index].date),
+              child: GridView.count(
+                crossAxisCount: 3,
+                padding: EdgeInsets.all(130), // padding around the grid
+                crossAxisSpacing: 10, // space between columns
+                mainAxisSpacing: 10,  // space between rows
+                children: filteredCategories.map((category) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CategoryPage(category: category),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: Colors.orange[100],
+                      child: Center(
+                        child: Text(
+                          category,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
                     ),
                   );
-                },
+                }).toList(),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CategoryPage extends StatelessWidget {
+  final String category;
+
+  CategoryPage({required this.category});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('$category Events'),
+      ),
+      body: Center(
+        child: Text('Events coming soon!'),
       ),
     );
   }
