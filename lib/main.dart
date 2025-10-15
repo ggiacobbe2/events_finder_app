@@ -4,27 +4,73 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isDarkMode = false;
+
+  final Color lightPrimaryColor = const Color(0xFFC600D4);
+  final Color darkPrimaryColor = const Color(0xFFD312E0);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Nearby Events Finder',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
+    final ThemeData lightTheme = ThemeData(
+      brightness: Brightness.light,
+      primaryColor: lightPrimaryColor,
+      appBarTheme: AppBarTheme(
+        backgroundColor: lightPrimaryColor,
+        foregroundColor: Colors.white,
       ),
-      home: EventsHomePage(),
+      scaffoldBackgroundColor: Colors.white,
+      cardColor: lightPrimaryColor,
+      textTheme: TextTheme(
+        bodyMedium: TextStyle(color: lightPrimaryColor),
+      ),
+    );
+
+    final ThemeData darkTheme = ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: darkPrimaryColor,
+      appBarTheme: AppBarTheme(
+        backgroundColor: darkPrimaryColor,
+        foregroundColor: Colors.white,
+      ),
+      scaffoldBackgroundColor: Colors.black,
+      cardColor: darkPrimaryColor,
+      textTheme: TextTheme(
+        bodyMedium: TextStyle(color: Colors.white),
+      ),
+    );
+
+    return MaterialApp(
+      theme: isDarkMode ? darkTheme : lightTheme,
+      debugShowCheckedModeBanner: false,
+      home: EventsHomePage(
+        isDarkMode: isDarkMode,
+        toggleTheme: () {
+          setState(() {
+            isDarkMode = !isDarkMode;
+          });
+        },
+      ),
     );
   }
 }
 
 class EventsHomePage extends StatefulWidget {
+  final bool isDarkMode;
+  final VoidCallback toggleTheme;
+
+  EventsHomePage({required this.isDarkMode, required this.toggleTheme});
+
   @override
   _EventsHomePageState createState() => _EventsHomePageState();
 }
 
 class _EventsHomePageState extends State<EventsHomePage> {
-  String searchQuery = '';
-
   final List<String> categories = [
     'Sports & Fitness',
     'Food',
@@ -39,65 +85,52 @@ class _EventsHomePageState extends State<EventsHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredCategories = categories
-        .where((category) =>
-            category.toLowerCase().contains(searchQuery.toLowerCase()))
-        .toList();
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nearby Events Finder'),
+        title: Text(
+          'Find an Event Near You!',
+          style: TextStyle(fontSize: 22),
+          ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              widget.isDarkMode ? Icons.wb_sunny : Icons.nights_stay,
+            ),
+            onPressed: widget.toggleTheme,
+          ),
+        ],
       ),
       body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(30.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Search',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    searchQuery = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                padding: EdgeInsets.all(30), // padding around the grid
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: filteredCategories.map((category) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CategoryPage(category: category),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      color: Colors.orange[100],
-                      child: Center(
-                        child: Text(
-                          category,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
+        child: Padding(
+          padding: EdgeInsets.all(30.0),
+          child: GridView.count(
+            crossAxisCount: 3,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            children: categories.map((category) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryPage(category: category),
                     ),
                   );
-                }).toList(),
-              ),
-            ),
-          ],
+                },
+                child: Card(
+                  child: Center(
+                    child: Text(
+                      category,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
