@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'search.dart';
+import 'profile.dart';
 
 void main() {
   runApp(MyApp());
@@ -92,14 +94,13 @@ class _EventsHomePageState extends State<EventsHomePage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildHomePage() {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Find an Event Near You!',
           style: TextStyle(fontSize: 22),
-          ),
+        ),
         actions: [
           IconButton(
             icon: Icon(
@@ -109,45 +110,48 @@ class _EventsHomePageState extends State<EventsHomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: _selectedIndex == 0
-          ? Padding(
-            padding: EdgeInsets.all(30.0),
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              children: categories.map((category) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CategoryPage(category: category),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    child: Center(
-                      child: Text(
-                        category,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: GridView.count(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          children: categories.map((category) {
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CategoryPage(category: category),
                   ),
                 );
-             }).toList(),
-            ),
-          )
-        : Center(
-            child: Text(
-              "Placeholder Text",
-            ),
-          ),
+              },
+              child: Card(
+                child: Center(
+                  child: Text(
+                    category,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      _buildHomePage(),
+      const SearchPage(),
+      const ProfilePage(),
+    ];
+
+    return Scaffold(
+      body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
