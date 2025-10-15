@@ -46,12 +46,14 @@ class _MyAppState extends State<MyApp> {
     );
 
     return MaterialApp(
-      theme: isDarkMode ? darkTheme : lightTheme,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       home: EventsHomePage(
-        isDarkMode: isDarkMode,
-        toggleTheme: () {
-          setState(() {
+       isDarkMode: isDarkMode,
+       toggleTheme: () {
+         setState(() {
             isDarkMode = !isDarkMode;
           });
         },
@@ -71,6 +73,7 @@ class EventsHomePage extends StatefulWidget {
 }
 
 class _EventsHomePageState extends State<EventsHomePage> {
+  int _selectedIndex = 0;
   final List<String> categories = [
     'Sports & Fitness',
     'Food',
@@ -82,6 +85,12 @@ class _EventsHomePageState extends State<EventsHomePage> {
     'Professional',
     'Music & Art',
   ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,37 +110,62 @@ class _EventsHomePageState extends State<EventsHomePage> {
         ],
       ),
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(30.0),
-          child: GridView.count(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            children: categories.map((category) {
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(category: category),
-                    ),
-                  );
-                },
-                child: Card(
-                  child: Center(
-                    child: Text(
-                      category,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
+        child: _selectedIndex == 0
+          ? Padding(
+            padding: EdgeInsets.all(30.0),
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              children: categories.map((category) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPage(category: category),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: Center(
+                      child: Text(
+                        category,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+             }).toList(),
+            ),
+          )
+        : Center(
+            child: Text(
+              "Placeholder Text",
+            ),
           ),
-        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color.fromARGB(255, 144, 0, 255),
+        onTap: _onItemTapped,
       ),
     );
   }
