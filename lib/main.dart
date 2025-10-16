@@ -176,8 +176,8 @@ class _EventsHomePageState extends State<EventsHomePage> {
   Widget build(BuildContext context) {
     final List<Widget> pages = [
       _buildHomePage(),
-      const SearchPage(),
-      const ProfilePage(),
+      SearchPage(isDarkMode: widget.isDarkMode, toggleTheme: widget.toggleTheme),
+      ProfilePage(isDarkMode: widget.isDarkMode, toggleTheme: widget.toggleTheme),
     ];
 
     return Scaffold(
@@ -198,7 +198,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 4, 125, 26),
+        selectedItemColor: const Color.fromARGB(255, 0, 137, 0),
         onTap: _onItemTapped,
       ),
     );
