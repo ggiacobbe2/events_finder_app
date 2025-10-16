@@ -42,76 +42,81 @@ class _SearchPageState extends State<SearchPage> {
 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Search bar
-            Expanded(
-              flex: 3,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    searchQuery = value;
-                  });
-                },
+            TextField(
+              decoration: const InputDecoration(
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
               ),
-            ),
-
-            const SizedBox(width: 10),
-
-            Expanded(
-              flex: 2,
-              child: DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  hintText: 'Select Location',
-                  border: OutlineInputBorder(),
-                ),
-                value: selectedLocation,
-                onChanged: (value) {
-                  setState(() {
-                    selectedLocation = value;
-                  });
-                },
-                items: locations.map((location) {
-                  return DropdownMenuItem(
-                    value: location,
-                    child: Text(location),
-                  );
-                }).toList(),
-              ),
-            ),
-
-            const SizedBox(width: 10),
-
-            InkWell(
-              onTap: () async {
-                DateTimeRange? picked = await showDateRangePicker(
-                  context: context,
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2030),
-                  initialDateRange: selectedDateRange,
-                );
-                if (picked != null) {
-                  setState(() {
-                    selectedDateRange = picked;
-                  });
-                }
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
               },
-              child: Container(
-                padding: const EdgeInsets.all(11.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4.0),
-                  border: Border.all(color: const Color.fromARGB(255, 113, 113, 113)),
+            ),
+
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: DropdownButtonFormField<String>(
+                    isExpanded: true,
+                    hint: const Text('Where'),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    value: selectedLocation,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedLocation = value;
+                      });
+                    },
+                    items: locations.map((location) {
+                      return DropdownMenuItem(
+                        value: location,
+                        child: Text(location),
+                      );
+                    }).toList(),
+                  ),
                 ),
-                child: Icon(
-                  Icons.calendar_month,
-                  color: Theme.of(context).primaryColor,
+
+                const SizedBox(width: 10),
+
+                SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: InkWell(
+                    onTap: () async {
+                      DateTimeRange? picked = await showDateRangePicker(
+                        context: context,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2030),
+                        initialDateRange: selectedDateRange,
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          selectedDateRange = picked;
+                        });
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.0),
+                        border: Border.all(color: const Color.fromARGB(255, 113, 113, 113)),
+                      ),
+                      child: Icon(
+                        Icons.calendar_month,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         ),
