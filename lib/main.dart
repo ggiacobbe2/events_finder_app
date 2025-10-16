@@ -92,7 +92,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
     Icons.sports_soccer,
     Icons.restaurant,
     Icons.nightlife,
-    Icons.airplane_ticket,
+    Icons.travel_explore,
     Icons.add,
     Icons.school,
     Icons.family_restroom,
