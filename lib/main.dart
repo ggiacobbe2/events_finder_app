@@ -14,8 +14,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isDarkMode = false;
 
-  final Color lightPrimaryColor = const Color(0xFFC600D4);
-  final Color darkPrimaryColor = const Color(0xFFD312E0);
+  final Color lightPrimaryColor = const Color.fromARGB(255, 5, 204, 98);
+  final Color darkPrimaryColor = const Color.fromARGB(255, 32, 222, 121);
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +88,18 @@ class _EventsHomePageState extends State<EventsHomePage> {
     'Music & Art',
   ];
 
+  final List<IconData> categoryIcons = [
+    Icons.sports_soccer,
+    Icons.restaurant,
+    Icons.nightlife,
+    Icons.airplane_ticket,
+    Icons.add,
+    Icons.school,
+    Icons.family_restroom,
+    Icons.business_center,
+    Icons.music_note,
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -114,27 +126,45 @@ class _EventsHomePageState extends State<EventsHomePage> {
         padding: const EdgeInsets.all(30.0),
         child: GridView.count(
           crossAxisCount: 3,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
           children: categories.map((category) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryPage(category: category),
-                  ),
-                );
-              },
-              child: Card(
-                child: Center(
-                  child: Text(
-                    category,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16),
+            return Column(
+              children: [
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CategoryPage(category: category),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        child: Center(
+                          child: Icon(
+                            categoryIcons[categories.indexOf(category)],
+                            size: 40,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Text(
+                  category,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             );
           }).toList(),
         ),
@@ -168,7 +198,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 144, 0, 255),
+        selectedItemColor: const Color.fromARGB(255, 4, 125, 26),
         onTap: _onItemTapped,
       ),
     );
