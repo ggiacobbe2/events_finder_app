@@ -15,16 +15,58 @@ class _SearchPageState extends State<SearchPage> {
   DateTimeRange? selectedDateRange;
   String? selectedLocation;
 
-  final List<String> locations = [ // placeholders, will use db later
-    'New York',
-    'Los Angeles',
-    'Chicago',
-    'Houston',
-    'Miami',
+  List<Map<String, dynamic>> allEvents = [ // placeholder events
+    {'title': 'Event 1', 'location': 'New York', 'date': DateTime(2025, 10, 18)},
+    {'title': 'Event 2', 'location': 'Los Angeles', 'date': DateTime(2025, 11, 8)},
+    {'title': 'Event 3', 'location': 'Miami', 'date': DateTime(2025, 12, 11)},
+    {'title': 'Event 4', 'location': 'Chicago', 'date': DateTime(2025, 12, 21)},
   ];
 
-  String getDateRangeText() {
-    return '${selectedDateRange!.start.month}/${selectedDateRange!.start.day}/${selectedDateRange!.start.year} - ${selectedDateRange!.end.month}/${selectedDateRange!.end.day}/${selectedDateRange!.end.year}';
+  List<Map<String, dynamic>> filteredEvents = [];
+
+  final List<String> locations = [
+    'All',
+    'Atlanta',
+    'Boston',
+    'Chicago',
+    'Houston',
+    'Los Angeles',
+    'Miami',
+    'New York',
+    'Portland',
+    'San Francisco',
+    'Seattle',
+  ];
+
+  // String getDateRangeText() {
+  //   return '${selectedDateRange!.start.month}/${selectedDateRange!.start.day}/${selectedDateRange!.start.year} - ${selectedDateRange!.end.month}/${selectedDateRange!.end.day}/${selectedDateRange!.end.year}';
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    filteredEvents = List.from(allEvents);
+  }
+
+  void _filterEvents() {
+    setState(() {
+      filteredEvents = allEvents.where((event) {
+        final matchesQuery = searchQuery.isEmpty || event['title'].toLowerCase().contains(searchQuery.toLowerCase());
+        final matchesLocation = selectedLocation == null || selectedLocation == 'All' || event['location'] == selectedLocation;
+        final matchesDateRange = selectedDateRange == null ||
+            (event['date'].isAfter(selectedDateRange!.start.subtract(const Duration(days: 1))) &&
+             event['date'].isBefore(selectedDateRange!.end.add(const Duration(days: 1))));
+        return matchesQuery && matchesLocation && matchesDateRange;
+      }).toList();
+    });
+  }
+
+  String _getDateRangeText() {
+    if (selectedDateRange == null) {
+      return 'Select Date Range';
+    } else {
+      return '${selectedDateRange!.start.month}/${selectedDateRange!.start.day}/${selectedDateRange!.start.year} - ${selectedDateRange!.end.month}/${selectedDateRange!.end.day}/${selectedDateRange!.end.year}';
+    }
   }
 
   @override
@@ -43,7 +85,6 @@ class _SearchPageState extends State<SearchPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               decoration: const InputDecoration(
@@ -52,75 +93,98 @@ class _SearchPageState extends State<SearchPage> {
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
+                searchQuery = value;
+                _filterEvents();
               },
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
 
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    hint: const Text('Where'),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    value: selectedLocation,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedLocation = value;
-                      });
-                    },
-                    items: locations.map((location) {
-                      return DropdownMenuItem(
-                        value: location,
-                        child: Text(location),
-                      );
-                    }).toList(),
-                  ),
-                ),
-
-                const SizedBox(width: 10),
-
-                SizedBox(
-                  height: 60,
-                  width: 60,
-                  child: InkWell(
-                    onTap: () async {
-                      DateTimeRange? picked = await showDateRangePicker(
-                        context: context,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2030),
-                        initialDateRange: selectedDateRange,
-                      );
-                      if (picked != null) {
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      hint: const Text('Where'),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+                      ),
+                      value: selectedLocation,
+                      onChanged: (value) {
                         setState(() {
-                          selectedDateRange = picked;
+                          selectedLocation = value;
+                          _filterEvents();
                         });
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.0),
-                        border: Border.all(color: const Color.fromARGB(255, 113, 113, 113)),
-                      ),
-                      child: Icon(
-                        Icons.calendar_month,
-                        color: Theme.of(context).primaryColor,
+                      },
+                      items: locations.map((location) {
+                        return DropdownMenuItem(
+                          value: location,
+                          child: Text(location),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+
+                  const SizedBox(width: 8),
+
+                  SizedBox(
+                    width: 58,
+                    child: InkWell(
+                      onTap: () async {
+                        final picked = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2030),
+                          initialDateRange: selectedDateRange,
+                        );
+                        if (picked != null) {
+                          setState(() {
+                            selectedDateRange = picked;
+                            _filterEvents();
+                          });
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.0),
+                          border: Border.all(color: const Color.fromARGB(255, 113, 113, 113)),
+                        ),
+                        child: Icon(
+                          Icons.calendar_month,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+
+            const SizedBox(width: 16),
+
+            Expanded(
+              child: filteredEvents.isEmpty
+                  ? const Center(child: Text('No events found'))
+                  : ListView.builder(
+                      itemCount: filteredEvents.length,
+                      itemBuilder: (context, index) {
+                        final event = filteredEvents[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(event['title']),
+                            subtitle: Text('${event['location']} - ${event['date'].month}/${event['date'].day}/${event['date'].year}'),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      } 
