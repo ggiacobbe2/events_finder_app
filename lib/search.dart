@@ -15,7 +15,7 @@ class _SearchPageState extends State<SearchPage> {
   DateTimeRange? selectedDateRange;
   String? selectedLocation;
 
-  final List<String> locations = [ // placeholders
+  final List<String> locations = [ // placeholders, will use db later
     'New York',
     'Los Angeles',
     'Chicago',

@@ -14,8 +14,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isDarkMode = false;
 
-  final Color lightPrimaryColor = const Color.fromARGB(255, 5, 204, 98);
-  final Color darkPrimaryColor = const Color.fromARGB(255, 32, 222, 121);
+  final Color lightPrimaryColor = const Color.fromARGB(255, 0, 158, 98);
+  final Color darkPrimaryColor = const Color.fromARGB(255, 16, 176, 115);
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +106,70 @@ class _EventsHomePageState extends State<EventsHomePage> {
     });
   }
 
+  Widget _buildEventCard(String title, String date, String imagePath) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Image.asset(
+              'assets/$imagePath',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.black.withOpacity(0.7),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            left: 10,
+            right: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  date,
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildHomePage() {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Find an Event Near You!',
+          'Find Your Next Event',
           style: TextStyle(fontSize: 22),
         ),
         actions: [
@@ -122,52 +181,80 @@ class _EventsHomePageState extends State<EventsHomePage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: GridView.count(
-          crossAxisCount: 3,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-          children: categories.map((category) {
-            return Column(
+      body: ListView(
+        padding: const EdgeInsets.all(10.0),
+        children: [
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 200,
+            child: PageView(
+              controller: PageController(viewportFraction: 0.9),
               children: [
-                Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategoryPage(category: category),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        child: Center(
-                          child: Icon(
-                            categoryIcons[categories.indexOf(category)],
-                            size: 40,
-                            color: Theme.of(context).primaryColor,
+                _buildEventCard('Event 1', 'date', 'image1.jpg'),
+                _buildEventCard('Event 2', 'date', 'image2.jpg'),
+                _buildEventCard('Event 3', 'date', 'image3.jpg'),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
+          Text(
+            'Browse by Category',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+          GridView.count(
+            crossAxisCount: 3,
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: categories.map((category) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryPage(category: category),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          child: Center(
+                            child: Icon(
+                              categoryIcons[categories.indexOf(category)],
+                              size: 40,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  category,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 4),
+                  Text(
+                    category,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
-            );
-          }).toList(),
-        ),
+                ],
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
@@ -198,7 +285,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 0, 137, 0),
+        selectedItemColor: const Color.fromARGB(255, 5, 95, 60),
         onTap: _onItemTapped,
       ),
     );
