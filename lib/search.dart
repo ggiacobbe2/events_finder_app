@@ -132,7 +132,7 @@ class _SearchPageState extends State<SearchPage> {
                   const SizedBox(width: 8),
 
                   SizedBox(
-                    width: 58,
+                    width: 40,
                     child: InkWell(
                       onTap: () async {
                         final picked = await showDateRangePicker(
@@ -151,11 +151,11 @@ class _SearchPageState extends State<SearchPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4.0),
-                          border: Border.all(color: const Color.fromARGB(255, 113, 113, 113)),
                         ),
                         child: Icon(
                           Icons.calendar_month,
                           color: Theme.of(context).primaryColor,
+                          size: 32,
                         ),
                       ),
                     ),
@@ -164,7 +164,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
 
-            const SizedBox(width: 16),
+            const SizedBox(height: 10),
 
             Expanded(
               child: filteredEvents.isEmpty
@@ -174,9 +174,16 @@ class _SearchPageState extends State<SearchPage> {
                       itemBuilder: (context, index) {
                         final event = filteredEvents[index];
                         return Card(
+                          color: Theme.of(context).cardColor,
                           child: ListTile(
                             title: Text(event['title']),
                             subtitle: Text('${event['location']} - ${event['date'].month}/${event['date'].day}/${event['date'].year}'),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.bookmark_border),
+                              onPressed: () {
+                                // need to add saving functionality
+                              },
+                            ),
                           ),
                         );
                       },

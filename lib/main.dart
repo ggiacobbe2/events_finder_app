@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'search.dart';
+import 'saved_events.dart';
 import 'profile.dart';
 
 void main() {
@@ -14,42 +15,58 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isDarkMode = false;
 
-  final Color lightPrimaryColor = const Color.fromARGB(255, 0, 158, 98);
-  final Color darkPrimaryColor = const Color.fromARGB(255, 16, 176, 115);
+  final Color lightPrimaryColor = const Color(0xFF009E62);
+  final Color darkPrimaryColor = const Color(0xFF10B073);
+  final Color lightBackgroundColor = const Color(0xFFFAFFF9);
+  final Color darkBackgroundColor = Colors.black;
+  final Color lightCardColor = const Color(0xFFF2F6F3);
+  final Color darkCardColor = const Color(0xFF1E1E1E);
+  final Color lightTextColor = const Color(0xFFFAFFF9);
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData lightTheme = ThemeData(
+    ThemeData _buildLightTheme() => ThemeData(
       brightness: Brightness.light,
       primaryColor: lightPrimaryColor,
+      scaffoldBackgroundColor: lightBackgroundColor,
+      cardColor: lightCardColor,
       appBarTheme: AppBarTheme(
         backgroundColor: lightPrimaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: lightTextColor,
       ),
-      scaffoldBackgroundColor: Colors.white,
-      cardColor: lightPrimaryColor,
-      textTheme: TextTheme(
-        bodyMedium: TextStyle(color: lightPrimaryColor),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: lightBackgroundColor,
+        unselectedItemColor: lightPrimaryColor,
+      ),
+      textTheme: const TextTheme(
+        bodyMedium: TextStyle(color: Colors.black),
       ),
     );
 
-    final ThemeData darkTheme = ThemeData(
+    ThemeData _buildDarkTheme() => ThemeData(
       brightness: Brightness.dark,
       primaryColor: darkPrimaryColor,
+      scaffoldBackgroundColor: darkBackgroundColor,
+      cardColor: darkCardColor,
       appBarTheme: AppBarTheme(
         backgroundColor: darkPrimaryColor,
         foregroundColor: Colors.white,
       ),
-      scaffoldBackgroundColor: Colors.black,
-      cardColor: darkPrimaryColor,
-      textTheme: TextTheme(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: darkBackgroundColor,
+        selectedItemColor: darkPrimaryColor,
+        unselectedItemColor: Colors.white70,
+      ),
+      textTheme: const TextTheme(
         bodyMedium: TextStyle(color: Colors.white),
       ),
     );
 
     return MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: _buildLightTheme(),
+      darkTheme: _buildDarkTheme(),
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       home: EventsHomePage(
@@ -143,8 +160,8 @@ class _EventsHomePageState extends State<EventsHomePage> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).appBarTheme.foregroundColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -152,8 +169,8 @@ class _EventsHomePageState extends State<EventsHomePage> {
                 const SizedBox(height: 4),
                 Text(
                   date,
-                  style: const TextStyle(
-                    color: Colors.white70,
+                  style: TextStyle(
+                    color: Theme.of(context).appBarTheme.foregroundColor,
                     fontSize: 14,
                   ),
                 ),
@@ -230,6 +247,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
                           );
                         },
                         child: Card(
+                          color: Theme.of(context).cardColor,
                           child: Center(
                             child: Icon(
                               categoryIcons[categories.indexOf(category)],
@@ -245,7 +263,8 @@ class _EventsHomePageState extends State<EventsHomePage> {
                   Text(
                     category,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -264,12 +283,14 @@ class _EventsHomePageState extends State<EventsHomePage> {
     final List<Widget> pages = [
       _buildHomePage(),
       SearchPage(isDarkMode: widget.isDarkMode, toggleTheme: widget.toggleTheme),
+      SavedEventsPage(isDarkMode: widget.isDarkMode, toggleTheme: widget.toggleTheme),
       ProfilePage(isDarkMode: widget.isDarkMode, toggleTheme: widget.toggleTheme),
     ];
 
     return Scaffold(
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -280,12 +301,17 @@ class _EventsHomePageState extends State<EventsHomePage> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Saved',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 5, 95, 60),
+        selectedItemColor: const Color.fromARGB(255, 5, 104, 68),
+        unselectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,
       ),
     );
