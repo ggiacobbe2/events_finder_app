@@ -192,7 +192,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
         actions: [
           IconButton(
             icon: Icon(
-              widget.isDarkMode ? Icons.wb_sunny : Icons.nights_stay,
+              widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round,
             ),
             onPressed: widget.toggleTheme,
           ),

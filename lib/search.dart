@@ -38,10 +38,6 @@ class _SearchPageState extends State<SearchPage> {
     'Seattle',
   ];
 
-  // String getDateRangeText() {
-  //   return '${selectedDateRange!.start.month}/${selectedDateRange!.start.day}/${selectedDateRange!.start.year} - ${selectedDateRange!.end.month}/${selectedDateRange!.end.day}/${selectedDateRange!.end.year}';
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -109,6 +105,7 @@ class _SearchPageState extends State<SearchPage> {
                     child: DropdownButtonFormField<String>(
                       isExpanded: true,
                       hint: const Text('Where'),
+                      dropdownColor: Theme.of(context).cardColor,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
