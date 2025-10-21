@@ -23,7 +23,7 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
         title: const Text('Your Saved Events'),
         actions: [
           IconButton(
-            icon: Icon(widget.isDarkMode ? Icons.wb_sunny : Icons.nights_stay),
+            icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
             onPressed: widget.toggleTheme,
           ),
         ],
@@ -49,7 +49,7 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
                       icon: const Icon(Icons.bookmark),
                       onPressed: () {
                         setState(() {
-                          savedEvents.removeAt(index);
+                          savedEvents.removeAt(index); // having issues keeping this removed
                         });
                       },
                     ),

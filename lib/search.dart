@@ -57,13 +57,13 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  String _getDateRangeText() {
-    if (selectedDateRange == null) {
-      return 'Select Date Range';
-    } else {
-      return '${selectedDateRange!.start.month}/${selectedDateRange!.start.day}/${selectedDateRange!.start.year} - ${selectedDateRange!.end.month}/${selectedDateRange!.end.day}/${selectedDateRange!.end.year}';
-    }
-  }
+//  String _getDateRangeText() {
+//    if (selectedDateRange == null) {
+//      return 'Select Date Range';
+//    } else {
+//      return '${selectedDateRange!.start.month}/${selectedDateRange!.start.day}/${selectedDateRange!.start.year} - ${selectedDateRange!.end.month}/${selectedDateRange!.end.day}/${selectedDateRange!.end.year}';
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class _SearchPageState extends State<SearchPage> {
         title: const Text('Search Events Near You'),
         actions: [
           IconButton(
-            icon: Icon(widget.isDarkMode ? Icons.wb_sunny : Icons.nights_stay),
+            icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
             onPressed: widget.toggleTheme,
           ),
         ],

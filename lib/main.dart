@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
   final Color lightCardColor = const Color(0xFFF2F6F3);
   final Color darkCardColor = const Color(0xFF1E1E1E);
   final Color lightTextColor = const Color(0xFFFAFFF9);
+  final Color darkTextColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +40,9 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: lightBackgroundColor,
         unselectedItemColor: lightPrimaryColor,
       ),
-      textTheme: const TextTheme(
-        bodyMedium: TextStyle(color: Colors.black),
+      textTheme: ThemeData.light().textTheme.apply(
+        bodyColor: Colors.black,
+        displayColor: Colors.black,
       ),
     );
 
@@ -51,7 +53,7 @@ class _MyAppState extends State<MyApp> {
       cardColor: darkCardColor,
       appBarTheme: AppBarTheme(
         backgroundColor: darkPrimaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: darkTextColor,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         type: BottomNavigationBarType.fixed,
@@ -59,8 +61,9 @@ class _MyAppState extends State<MyApp> {
         selectedItemColor: darkPrimaryColor,
         unselectedItemColor: Colors.white70,
       ),
-      textTheme: const TextTheme(
-        bodyMedium: TextStyle(color: Colors.white),
+      textTheme: ThemeData.light().textTheme.apply(
+        bodyColor: Colors.white,
+        displayColor: Colors.white,
       ),
     );
 
