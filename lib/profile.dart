@@ -116,6 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 20),
+
             // might change formatting of these sections below
             OutlinedButton(
               onPressed: () {},
