@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'all_events.dart';
 
 class SearchPage extends StatefulWidget {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
 
-  const SearchPage({Key? key, required this.isDarkMode, required this.toggleTheme}) : super(key: key);
+  const SearchPage({super.key, required this.isDarkMode, required this.toggleTheme});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -15,13 +16,6 @@ class _SearchPageState extends State<SearchPage> {
   DateTimeRange? selectedDateRange;
   String? selectedLocation;
 
-  List<Map<String, dynamic>> allEvents = [ // placeholder events
-    {'title': 'Event 1', 'location': 'New York', 'date': DateTime(2025, 10, 18)},
-    {'title': 'Event 2', 'location': 'Los Angeles', 'date': DateTime(2025, 11, 8)},
-    {'title': 'Event 3', 'location': 'Miami', 'date': DateTime(2025, 12, 11)},
-    {'title': 'Event 4', 'location': 'Chicago', 'date': DateTime(2025, 12, 21)},
-  ];
-
   List<Map<String, dynamic>> filteredEvents = [];
 
   final List<String> locations = [
@@ -29,12 +23,16 @@ class _SearchPageState extends State<SearchPage> {
     'Atlanta',
     'Boston',
     'Chicago',
+    'Denver',
     'Houston',
+    'Jacksonville',
     'Los Angeles',
     'Miami',
     'New York',
+    'Philadelphia',
+    'Phoenix',
     'Portland',
-    'San Francisco',
+    'San Diego',
     'Seattle',
   ];
 
@@ -47,23 +45,24 @@ class _SearchPageState extends State<SearchPage> {
   void _filterEvents() {
     setState(() {
       filteredEvents = allEvents.where((event) {
-        final matchesQuery = searchQuery.isEmpty || event['title'].toLowerCase().contains(searchQuery.toLowerCase());
-        final matchesLocation = selectedLocation == null || selectedLocation == 'All' || event['location'] == selectedLocation;
+        final matchesQuery = searchQuery.isEmpty ||
+            (event['title']?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
+
+        final matchesLocation = selectedLocation == null ||
+            selectedLocation == 'All' ||
+            event['location'] == selectedLocation;
+
+        final eventDate = DateTime.tryParse(event['date'] ?? '');
         final matchesDateRange = selectedDateRange == null ||
-            (event['date'].isAfter(selectedDateRange!.start.subtract(const Duration(days: 1))) &&
-             event['date'].isBefore(selectedDateRange!.end.add(const Duration(days: 1))));
+            (eventDate != null &&
+            eventDate.isAfter(selectedDateRange!.start.subtract(const Duration(days: 1))) &&
+            eventDate.isBefore(selectedDateRange!.end.add(const Duration(days: 1))));
+
         return matchesQuery && matchesLocation && matchesDateRange;
       }).toList();
     });
   }
 
-//  String _getDateRangeText() {
-//    if (selectedDateRange == null) {
-//      return 'Select Date Range';
-//    } else {
-//      return '${selectedDateRange!.start.month}/${selectedDateRange!.start.day}/${selectedDateRange!.start.year} - ${selectedDateRange!.end.month}/${selectedDateRange!.end.day}/${selectedDateRange!.end.year}';
-//    }
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,11 +169,13 @@ class _SearchPageState extends State<SearchPage> {
                       itemCount: filteredEvents.length,
                       itemBuilder: (context, index) {
                         final event = filteredEvents[index];
+                        final eventDate = DateTime.tryParse(event['date'] ?? '');
+                        final dateText = eventDate != null ? "${eventDate.month}/${eventDate.day}/${eventDate.year}" : event['date'];
                         return Card(
                           color: Theme.of(context).cardColor,
                           child: ListTile(
                             title: Text(event['title']),
-                            subtitle: Text('${event['location']} - ${event['date'].month}/${event['date'].day}/${event['date'].year}'),
+                            subtitle: Text('${event['location']} - $dateText'),
                             trailing: IconButton(
                               icon: const Icon(Icons.bookmark_border),
                               onPressed: () {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'search.dart';
 import 'saved_events.dart';
 import 'profile.dart';
+import 'category_page.dart';
+import 'all_events.dart';
 
 void main() {
   runApp(MyApp());
@@ -126,7 +128,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
     });
   }
 
-  Widget _buildEventCard(String title, String date, String imagePath) {
+  Widget _buildEventCard(String title, String location, String date, String imagePath) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -171,7 +173,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  date,
+                  '$location, $date',
                   style: TextStyle(
                     color: Theme.of(context).appBarTheme.foregroundColor,
                     fontSize: 14,
@@ -205,15 +207,30 @@ class _EventsHomePageState extends State<EventsHomePage> {
         padding: const EdgeInsets.all(10.0),
         children: [
           const SizedBox(height: 10),
+          Text(
+            'Upcoming Events',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          const SizedBox(height: 10),
           SizedBox(
             height: 200,
             child: PageView(
               controller: PageController(viewportFraction: 0.9),
-              children: [
-                _buildEventCard('Event 1', 'date', 'image1.jpg'),
-                _buildEventCard('Event 2', 'date', 'image2.jpg'),
-                _buildEventCard('Event 3', 'date', 'image3.jpg'),
-              ],
+              children: allEvents.take(5).map((event) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: _buildEventCard(
+                    event['title'],
+                    event['location'],
+                    event['date'],
+                    event.containsKey('image') ? event['image'] : 'default_event.jpg',
+                  ),
+                );
+              }).toList(),
             ),
           ),
 
@@ -316,24 +333,6 @@ class _EventsHomePageState extends State<EventsHomePage> {
         selectedItemColor: const Color.fromARGB(255, 5, 104, 68),
         unselectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,
-      ),
-    );
-  }
-}
-
-class CategoryPage extends StatelessWidget {
-  final String category;
-
-  CategoryPage({required this.category});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('$category Events'),
-      ),
-      body: Center(
-        child: Text('Events coming soon!'),
       ),
     );
   }
