@@ -11,10 +11,7 @@ class SavedEventsPage extends StatefulWidget {
 }
 
 class _SavedEventsPageState extends State<SavedEventsPage> {
-  List<Map<String, String>> savedEvents = [ // placeholder saved events
-    {'title': 'Event 1', 'date': '2025-10-18', 'location': 'New York'},
-    {'title': 'Event 2', 'date': '2025-11-08', 'location': 'Los Angeles'},
-  ];
+  List<Map<String, String>> savedEvents = [];
 
   @override
   Widget build(BuildContext context) {

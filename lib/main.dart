@@ -10,6 +10,8 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -90,7 +92,7 @@ class EventsHomePage extends StatefulWidget {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
 
-  EventsHomePage({required this.isDarkMode, required this.toggleTheme});
+  const EventsHomePage({super.key, required this.isDarkMode, required this.toggleTheme});
 
   @override
   _EventsHomePageState createState() => _EventsHomePageState();
@@ -259,12 +261,16 @@ class _EventsHomePageState extends State<EventsHomePage> {
                       aspectRatio: 1,
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CategoryPage(category: category),
-                            ),
-                          );
+                          if (category == 'Post an Event!') {
+                            // handle this navigation
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CategoryPage(category: category),
+                              ),
+                            );
+                          }
                         },
                         child: Card(
                           color: Theme.of(context).cardColor,

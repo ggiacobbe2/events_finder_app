@@ -32,23 +32,75 @@ class CategoryPage extends StatelessWidget {
       ),
       body: categoryEvents.isEmpty
           ? const Center(child: Text('No events found in this category.'))
-          : ListView.builder(
-              itemCount: categoryEvents.length,
-              itemBuilder: (context, index) {
-                final event = categoryEvents[index];
-                return Card(
-                  margin: const EdgeInsets.all(6.0),
-                  color: Theme.of(context).cardColor,
-                  elevation: 3,
-                  child: ListTile(
-                    title: Text(event['title']),
-                    subtitle: Text('${event['location']} - ${event['date']}'),
-                    // optional: add image if available
-                    // leading: Image.asset('assets/${event['image']}', width: 50, height: 50, fit: BoxFit.cover),
+          : Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+            ),
+            itemCount: categoryEvents.length,
+            itemBuilder: (context, index) {
+              final event = categoryEvents[index];
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return Card(
+                    color: Theme.of(context).cardColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                elevation: 4,
+                clipBehavior: Clip.antiAlias,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(10),
+                          ),
+                          child: Image.asset(
+                            'assets/${event['image']}',
+                            width: double.infinity,
+                            height: constraints.maxWidth * 0.6,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                event['title'],
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${event['location']}, ${event['date']}',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
-            ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

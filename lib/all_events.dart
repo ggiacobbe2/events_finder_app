@@ -1,10 +1,10 @@
 final List<Map<String, dynamic>> allEvents = [
 
   {'title': 'Rock Concert', 'date': '2025-10-20', 'location': 'New York', 'category': ['Music', 'Nightlife'], 'description': 'Live music performances from various rock artists.', 'image': 'rock_concert.jpg'},
-  {'title': 'Jazz Night', 'date': '2025-11-0h5', 'location': 'Atlanta', 'category': ['Music', 'Art'], 'description': 'Enjoy an evening of smooth jazz with local musicians.', 'image': 'jazz_night.jpg'},
+  {'title': 'Halloween Parade', 'date': '2025-10-31', 'location': 'Chicago', 'category': ['Family', 'Lifestyle'], 'description': 'Join the spooky fun with costumes and floats.', 'image': 'halloween_parade.jpg'},
+  {'title': 'Jazz Night', 'date': '2025-11-05', 'location': 'Atlanta', 'category': ['Music', 'Art'], 'description': 'Enjoy an evening of smooth jazz with local musicians.', 'image': 'jazz_night.jpg'},
   {'title': 'Food Festival', 'date': '2025-11-15', 'location': 'Chicago', 'category': ['Food', 'Lifestyle', 'Family'], 'description': 'Taste dishes from top local and international chefs.', 'image': 'food_festival.jpg'},
   {'title': 'Tech Workshop', 'date': '2025-12-01', 'location': 'San Diego', 'category': ['Education', 'Professional'], 'description': 'Hands-on coding and app development sessions.', 'image': 'tech_workshop.jpg'},
-  {'title': 'Halloween Parade', 'date': '2025-12-05', 'location': 'Chicago', 'category': ['Family', 'Lifestyle'], 'description': 'Join the spooky fun with costumes and floats.', 'image': 'halloween_parade.jpg'},
   {'title': 'Art Exhibition', 'date': '2025-12-10', 'location': 'Boston', 'category': ['Art'], 'description': 'Explore contemporary artwork from emerging artists.', 'image': 'art_exhibition.jpg'},
   {'title': 'Marathon', 'date': '2025-12-15', 'location': 'Houston', 'category': ['Sports', 'Fitness'], 'description': 'Annual city marathon, open to runners of all levels.', 'image': 'marathon.jpg'},
   {'title': 'Comedy Show', 'date': '2025-12-20', 'location': 'Los Angeles', 'category': ['Nightlife', 'Lifestyle'], 'description': 'Stand-up comedy night with famous comedians.', 'image': 'comedy_show.jpg'},
@@ -21,7 +21,7 @@ final List<Map<String, dynamic>> allEvents = [
   {'title': 'Craft Beer Festival', 'date': '2026-03-05', 'location': 'Los Angeles', 'category': ['Lifestyle', 'Food'], 'description': 'Sample local craft beers and learn about brewing.', 'image': 'beer_festival.jpg'},
   {'title': 'Farmers Market', 'date': '2026-03-10', 'location': 'Boston', 'category': ['Lifestyle', 'Family', 'Food'], 'description': 'Fresh produce and homemade goods from local farmers.', 'image': 'farmers_market.jpg'},
   {'title': 'Charity Run', 'date': '2026-03-15', 'location': 'Houston', 'category': ['Sports', 'Family'], 'description': '5k charity run to support local non-profits.', 'image': 'charity_run.jpg'},
-  {'title': 'Open-mic Night', 'date': '2026-03-20', 'location': 'Miami', 'category': ['Nightlife'], 'description': 'Showcase your talent or enjoy performances from the community.', 'image': 'open_mic.jpg'},
+  {'title': 'Open-Mic Night', 'date': '2026-03-20', 'location': 'Miami', 'category': ['Nightlife'], 'description': 'Showcase your talent or enjoy performances from the community.', 'image': 'open_mic.jpg'},
   {'title': 'Painting Class', 'date': '2026-04-01', 'location': 'Portland', 'category': ['Art', 'Education', 'Lifestyle'], 'description': 'Step-by-step painting lessons for beginners.', 'image': 'painting_class.jpg'},
   {'title': 'Indie Film Festival', 'date': '2026-04-05', 'location': 'Seattle', 'category': ['Art', 'Music'], 'description': 'Screenings of indie films from around the world.', 'image': 'indie_film_festival.jpg'},
   {'title': 'Cooking Workshop', 'date': '2026-04-10', 'location': 'Philadelphia', 'category': ['Education', 'Lifestyle', 'Food'], 'description': 'Hands-on cooking class with local chefs.', 'image': 'cooking_workshop.jpg'},
