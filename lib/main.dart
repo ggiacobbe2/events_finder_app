@@ -4,6 +4,7 @@ import 'saved_events.dart';
 import 'profile.dart';
 import 'category_page.dart';
 import 'all_events.dart';
+import 'event_detail_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -130,61 +131,83 @@ class _EventsHomePageState extends State<EventsHomePage> {
     });
   }
 
-  Widget _buildEventCard(String title, String location, String date, String imagePath) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: Image.asset(
-              'assets/$imagePath',
-              fit: BoxFit.cover,
+  Widget _buildEventCard(Map<String, dynamic> event) {
+    final String title = event['title'] ?? 'Upcoming Event';
+    final String location = event['location'] ?? 'Location TBD';
+    final DateTime? parsedDate = DateTime.tryParse(event['date'] ?? '');
+    final String dateText = parsedDate != null
+        ? '${parsedDate.month}/${parsedDate.day}/${parsedDate.year}'
+        : (event['date'] ?? 'Date TBD');
+    final String imagePath = event['image'] ?? '';
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EventDetailPage(
+              event: event,
+              isDarkMode: widget.isDarkMode,
+              toggleTheme: widget.toggleTheme,
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.black.withOpacity(0.7),
-                  Colors.transparent,
+              child: Image.asset(
+                'assets/$imagePath',
+                fit: BoxFit.cover,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.7),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              right: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Theme.of(context).appBarTheme.foregroundColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '$location, $dateText',
+                    style: TextStyle(
+                      color: Theme.of(context).appBarTheme.foregroundColor,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-          Positioned(
-            bottom: 10,
-            left: 10,
-            right: 10,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: Theme.of(context).appBarTheme.foregroundColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '$location, $date',
-                  style: TextStyle(
-                    color: Theme.of(context).appBarTheme.foregroundColor,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -225,12 +248,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
               children: allEvents.take(5).map((event) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: _buildEventCard(
-                    event['title'],
-                    event['location'],
-                    event['date'],
-                    event['image'],
-                  ),
+                  child: _buildEventCard(event),
                 );
               }).toList(),
             ),
@@ -267,7 +285,11 @@ class _EventsHomePageState extends State<EventsHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CategoryPage(category: category),
+                                builder: (context) => CategoryPage(
+                                  category: category,
+                                  isDarkMode: widget.isDarkMode,
+                                  toggleTheme: widget.toggleTheme,
+                                ),
                               ),
                             );
                           }
