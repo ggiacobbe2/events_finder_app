@@ -227,7 +227,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
                     event['title'],
                     event['location'],
                     event['date'],
-                    event.containsKey('image') ? event['image'] : 'default_event.jpg',
+                    event['image'],
                   ),
                 );
               }).toList(),
