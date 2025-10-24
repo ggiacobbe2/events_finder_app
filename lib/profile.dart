@@ -80,88 +80,94 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              enabled: isEditing,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            TextField(
-              controller: emailController,
-              enabled: isEditing,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: phoneController,
-              enabled: isEditing,
-              decoration: const InputDecoration(labelText: 'Phone'),
-            ),
-            TextField(
-              controller: locationController,
-              enabled: isEditing,
-              decoration: const InputDecoration(labelText: 'Location'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _toggleEdit,
-              child: Text(isEditing ? 'Save Profile' : 'Edit Profile'),
-            ),
-            const SizedBox(height: 20),
-            // might change formatting of these sections below
-            OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                side: BorderSide(color: Colors.grey.shade400),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                elevation: 4,
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: nameController,
+                        enabled: isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: emailController,
+                        enabled: isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: phoneController,
+                        enabled: isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Phone',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: locationController,
+                        enabled: isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Location',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _toggleEdit,
+                        child: Text(isEditing ? 'Save Profile' : 'Edit Profile'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).cardColor,
+                          foregroundColor: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Text(
-                      "Your Tickets",
-                      style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyMedium!.color),
+              const SizedBox(height: 20),
+              OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  side: BorderSide(color: Colors.grey.shade400),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Text(
+                        "Your Tickets",
+                        style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyMedium!.color),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 12.0),
-                    child: Icon(Icons.arrow_forward_ios, size: 16, color: Theme.of(context).textTheme.bodyMedium!.color),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                side: BorderSide(color: Colors.grey.shade400),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Text(
-                      "Your Posted Events",
-                      style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyMedium!.color),
+                    Padding(
+                      padding: EdgeInsets.only(right: 12.0),
+                      child: Icon(Icons.arrow_forward_ios, size: 16, color: Theme.of(context).textTheme.bodyMedium!.color),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 12.0),
-                    child: Icon(Icons.arrow_forward_ios, size: 16, color: Theme.of(context).textTheme.bodyMedium!.color),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
-}

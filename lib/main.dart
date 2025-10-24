@@ -106,11 +106,11 @@ class _EventsHomePageState extends State<EventsHomePage> {
     'Food',
     'Nightlife',
     'Lifestyle',
-    'Post an Event!',
     'Education',
     'Family',
     'Professional',
-    'Music & Art',
+    'Music',
+    'Art',
   ];
 
   final List<IconData> categoryIcons = [
@@ -118,11 +118,11 @@ class _EventsHomePageState extends State<EventsHomePage> {
     Icons.restaurant,
     Icons.nightlife,
     Icons.travel_explore,
-    Icons.add,
     Icons.school,
     Icons.family_restroom,
     Icons.business_center,
     Icons.music_note,
+    Icons.brush,
   ];
 
   void _onItemTapped(int index) {
@@ -279,20 +279,16 @@ class _EventsHomePageState extends State<EventsHomePage> {
                       aspectRatio: 1,
                       child: InkWell(
                         onTap: () {
-                          if (category == 'Post an Event!') {
-                            // handle this navigation
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CategoryPage(
-                                  category: category,
-                                  isDarkMode: widget.isDarkMode,
-                                  toggleTheme: widget.toggleTheme,
-                                ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryPage(
+                                category: category,
+                                isDarkMode: widget.isDarkMode,
+                                toggleTheme: widget.toggleTheme,
                               ),
-                            );
-                          }
+                            ),
+                          );
                         },
                         child: Card(
                           color: Theme.of(context).cardColor,
