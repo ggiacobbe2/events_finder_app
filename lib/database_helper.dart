@@ -12,6 +12,7 @@ class DatabaseHelper {
 
   final String tableSavedEvents = 'savedEvents';
   final String tableProfile = 'profile';
+  final String tableSavedTickets = 'savedTickets';
 
   final String columnEventId = 'id';
   final String columnTitle = 'title';
@@ -34,7 +35,23 @@ class DatabaseHelper {
   Future <Database> _initDb() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, 'events_finder.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    return await openDatabase(
+      path,
+      version: 2,
+      onCreate: _onCreate,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('''
+            CREATE TABLE savedTickets (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              title TEXT NOT NULL,
+              date TEXT NOT NULL,
+              location TEXT NOT NULL
+            )
+          ''');
+        }
+      },
+    );
   }
 
   Future _onCreate(Database db, int version) async {
@@ -55,6 +72,15 @@ class DatabaseHelper {
         $columnEmail TEXT,
         $columnPhone TEXT,
         $columnProfileLocation TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE $tableSavedTickets (
+        $columnEventId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columnTitle TEXT NOT NULL,
+        $columnDate TEXT NOT NULL,
+        $columnLocation TEXT NOT NULL
       )
     ''');
   }
@@ -99,6 +125,25 @@ class DatabaseHelper {
       profile,
       where: '$columnProfileId = ?',
       whereArgs: [profile[columnProfileId]],
+    );
+  }
+
+  Future<int> insertTicket(Map<String, dynamic> ticket) async {
+    final dbClient = await db;
+    return await dbClient.insert(tableSavedTickets, ticket);
+  }
+
+  Future<List<Map<String, dynamic>>> getSavedTickets() async {
+    final dbClient = await db;
+    return await dbClient.query(tableSavedTickets);
+  }
+
+  Future<int> deleteTicket(int id) async {
+    final dbClient = await db;
+    return await dbClient.delete(
+      tableSavedTickets,
+      where: '$columnEventId = ?',
+      whereArgs: [id],
     );
   }
 }

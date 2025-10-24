@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ticket_page.dart';
 import 'database_helper.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -142,7 +143,18 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 20),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TicketPage(
+                        isDarkMode: widget.isDarkMode,
+                        toggleTheme: widget.toggleTheme,
+                      ),
+                    ),
+                  );
+                  setState(() {});
+                },
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   side: BorderSide(color: Colors.grey.shade400),
