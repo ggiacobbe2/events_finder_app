@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'database_helper.dart';
 
-class EventDetailPage extends StatelessWidget {
+class EventDetailPage extends StatefulWidget {
   final Map<String, dynamic> event;
   final bool isDarkMode;
   final VoidCallback toggleTheme;
@@ -13,27 +14,34 @@ class EventDetailPage extends StatelessWidget {
   });
 
   @override
+  State<EventDetailPage> createState() => _EventDetailPageState();
+}
+
+class _EventDetailPageState extends State<EventDetailPage> {
+  bool ticketReserved = false;
+
+  @override
   Widget build(BuildContext context) {
-    final String title = event['title'] ?? 'Event Details';
-    final String location = event['location'] ?? 'Location TBD';
-    final DateTime? parsedDate = DateTime.tryParse(event['date'] ?? '');
+    final String title = widget.event['title'] ?? 'Event Details';
+    final String location = widget.event['location'] ?? 'Location TBD';
+    final DateTime? parsedDate = DateTime.tryParse(widget.event['date'] ?? '');
     final String dateText = parsedDate == null
-        ? (event['date'] ?? 'Date TBD')
+        ? (widget.event['date'] ?? 'Date TBD')
         : '${parsedDate.month}/${parsedDate.day}/${parsedDate.year}';
     final String description =
-        event['description'] ?? 'No description available.';
+        widget.event['description'] ?? 'No description available.';
     final List<dynamic> categories =
-        (event['category'] is List) ? event['category'] : <String>[];
+        (widget.event['category'] is List) ? widget.event['category'] : <String>[];
     final String? imageName =
-        event['image'] != null ? 'assets/${event['image']}' : null;
+        widget.event['image'] != null ? 'assets/${widget.event['image']}' : null;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
         actions: [
           IconButton(
-            icon: Icon(isDarkMode ? Icons.light_mode : Icons.nightlight_round),
-            onPressed: toggleTheme,
+            icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
+            onPressed: widget.toggleTheme,
           ),
         ],
       ),
@@ -131,6 +139,39 @@ class EventDetailPage extends StatelessWidget {
             Text(
               description,
               style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                await DatabaseHelper().insertTicket({
+                  'title': widget.event['title'] ?? '',
+                  'date': widget.event['date'] ?? '',
+                  'location': widget.event['location'] ?? '',
+                });
+
+                setState(() {
+                  ticketReserved = true;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('One ticket reserved!')),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).cardColor,
+                foregroundColor: Theme.of(context).primaryColor,
+                side: BorderSide(color: Theme.of(context).primaryColor),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'Reserve a Ticket',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
             ),
           ],
         ),

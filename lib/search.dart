@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'all_events.dart';
 import 'event_detail_page.dart';
+import 'database_helper.dart';
 
 class SearchPage extends StatefulWidget {
   final bool isDarkMode;
@@ -13,11 +14,14 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final dbHelper = DatabaseHelper();
+
   String searchQuery = '';
   DateTimeRange? selectedDateRange;
   String? selectedLocation;
 
   List<Map<String, dynamic>> filteredEvents = [];
+  Set<String> savedEventTitles = {};
 
   final List<String> locations = [
     'All',
@@ -41,6 +45,14 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     filteredEvents = List.from(allEvents);
+    _loadSavedEvents();
+  }
+
+  Future<void> _loadSavedEvents() async {
+    final events = await dbHelper.getSavedEvents();
+    setState(() {
+      savedEventTitles = events.map((e) => e['title'] as String).toSet();
+    });
   }
 
   void _filterEvents() {
@@ -64,7 +76,6 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +88,6 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -93,9 +103,7 @@ class _SearchPageState extends State<SearchPage> {
                 _filterEvents();
               },
             ),
-
             const SizedBox(height: 8),
-
             IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,9 +133,7 @@ class _SearchPageState extends State<SearchPage> {
                       }).toList(),
                     ),
                   ),
-
                   const SizedBox(width: 8),
-
                   SizedBox(
                     width: 40,
                     child: InkWell(
@@ -145,24 +151,17 @@ class _SearchPageState extends State<SearchPage> {
                           });
                         }
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: Icon(
-                          Icons.calendar_month,
-                          color: Theme.of(context).primaryColor,
-                          size: 32,
-                        ),
+                      child: Icon(
+                        Icons.calendar_month,
+                        color: Theme.of(context).primaryColor,
+                        size: 32,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
             const SizedBox(height: 10),
-
             Expanded(
               child: filteredEvents.isEmpty
                   ? const Center(child: Text('No events found'))
@@ -171,16 +170,32 @@ class _SearchPageState extends State<SearchPage> {
                       itemBuilder: (context, index) {
                         final event = filteredEvents[index];
                         final eventDate = DateTime.tryParse(event['date'] ?? '');
-                        final dateText = eventDate != null ? "${eventDate.month}/${eventDate.day}/${eventDate.year}" : event['date'];
+                        final dateText = eventDate != null
+                            ? "${eventDate.month}/${eventDate.day}/${eventDate.year}"
+                            : event['date'];
                         return Card(
                           color: Theme.of(context).cardColor,
                           child: ListTile(
                             title: Text(event['title']),
                             subtitle: Text('${event['location']} - $dateText'),
                             trailing: IconButton(
-                              icon: const Icon(Icons.bookmark_border),
-                              onPressed: () {
-                                // need to add saving functionality
+                              icon: Icon(
+                                savedEventTitles.contains(event['title'])
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_border,
+                              ),
+                              onPressed: () async {
+                                if (!savedEventTitles.contains(event['title'])) {
+                                  await dbHelper.insertSavedEvent({
+                                    'title': event['title'],
+                                    'date': event['date'],
+                                    'location': event['location'],
+                                    'isSaved': 1,
+                                  });
+                                  setState(() {
+                                    savedEventTitles.add(event['title']);
+                                  });
+                                }
                               },
                             ),
                             onTap: () {
@@ -199,10 +214,10 @@ class _SearchPageState extends State<SearchPage> {
                         );
                       },
                     ),
-                  ),
-                ],
-              ),
             ),
-          );
-        }
-      }
+          ],
+        ),
+      ),
+    );
+  }
+}

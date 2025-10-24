@@ -18,7 +18,8 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, List<String>> categoryMapping = {
       'Sports & Fitness': ['Sports', 'Fitness'],
-      'Music & Art': ['Music', 'Art'],
+      'Music': ['Music'],
+      'Art': ['Art'],
       'Family': ['Family'],
       'Nightlife': ['Nightlife'],
       'Lifestyle': ['Lifestyle'],
