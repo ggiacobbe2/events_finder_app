@@ -9,7 +9,6 @@ final List<Map<String, dynamic>> allEvents = [
   {'title': 'Marathon', 'date': '2025-12-15', 'location': 'Houston', 'category': ['Sports', 'Fitness'], 'description': 'Annual city marathon, open to runners of all levels.', 'image': 'marathon.jpg'},
   {'title': 'Comedy Show', 'date': '2025-12-20', 'location': 'Los Angeles', 'category': ['Nightlife', 'Lifestyle'], 'description': 'Stand-up comedy night with famous comedians.', 'image': 'comedy_show.jpg'},
   {'title': 'Wine Tasting', 'date': '2026-01-05', 'location': 'Portland', 'category': ['Lifestyle', 'Family', 'Food'], 'description': 'Sample wines from local vineyards and winemakers.', 'image': 'wine_tasting.jpg'},
-  {'title': 'Book Fair', 'date': '2026-01-10', 'location': 'Philadelphia', 'category': ['Education', 'Family'], 'description': 'Meet authors and explore a wide range of books.', 'image': 'book_fair.jpg'},
   {'title': 'Film Screening', 'date': '2026-01-15', 'location': 'Seattle', 'category': ['Art', 'Music'], 'description': 'Watch indie films and participate in discussions with filmmakers.', 'image': 'film_screening.jpg'},
   {'title': 'Yoga Retreat', 'date': '2026-01-20', 'location': 'Miami', 'category': ['Fitness', 'Lifestyle'], 'description': 'Morning yoga sessions on the beach for all skill levels.', 'image': 'yoga_retreat.jpg'},
   {'title': 'Street Market', 'date': '2026-01-25', 'location': 'Denver', 'category': ['Lifestyle', 'Family', 'Food'], 'description': 'Browse handmade goods and local crafts from vendors.', 'image': 'street_market.jpg'},

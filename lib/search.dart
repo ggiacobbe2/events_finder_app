@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'all_events.dart';
+import 'event_detail_page.dart';
 
 class SearchPage extends StatefulWidget {
   final bool isDarkMode;
@@ -182,6 +183,18 @@ class _SearchPageState extends State<SearchPage> {
                                 // need to add saving functionality
                               },
                             ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EventDetailPage(
+                                    event: event,
+                                    isDarkMode: widget.isDarkMode,
+                                    toggleTheme: widget.toggleTheme,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         );
                       },
@@ -192,4 +205,4 @@ class _SearchPageState extends State<SearchPage> {
             ),
           );
         }
-      } 
+      }
