@@ -61,17 +61,4 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
                   elevation: 3,
                   child: ListTile(
                     title: Text(event['title'] ?? ''),
-                    subtitle: Text('${event['date']} - ${event['location']}'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.bookmark),
-                      onPressed: () {
-                        _deleteSavedEvent(event['id'] as int); // <- id stays int
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
-    );
-  }
-}
+                    subtitle: Text('${event['

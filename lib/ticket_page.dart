@@ -69,11 +69,4 @@ class _TicketPageState extends State<TicketPage> {
                       onPressed: () {
                         _deleteTicket(ticket['id'] as int);
                       },
-                    ),
-                  ),
-                );
-              },
-            ),
-    );
-  }
-}
+        
