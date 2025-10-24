@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
+import 'database_helper.dart';
 
 class SavedEventsPage extends StatefulWidget {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
 
-  const SavedEventsPage({Key? key, required this.isDarkMode, required this.toggleTheme}) : super(key: key);
+  const SavedEventsPage({super.key, required this.isDarkMode, required this.toggleTheme});
 
   @override
   _SavedEventsPageState createState() => _SavedEventsPageState();
 }
 
 class _SavedEventsPageState extends State<SavedEventsPage> {
-  List<Map<String, String>> savedEvents = [];
+  final dbHelper = DatabaseHelper();
+  List<Map<String, dynamic>> savedEvents = []; // <- dynamic, not String
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedEvents();
+  }
+
+  Future<void> _loadSavedEvents() async {
+    final events = await dbHelper.getSavedEvents();
+    setState(() {
+      savedEvents = events; // no casting needed
+    });
+  }
+
+  Future<void> _deleteSavedEvent(int id) async {
+    await dbHelper.deleteSavedEvent(id);
+    _loadSavedEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +60,12 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
                   color: Theme.of(context).cardColor,
                   elevation: 3,
                   child: ListTile(
-                    title: Text(event['title']!),
+                    title: Text(event['title'] ?? ''),
                     subtitle: Text('${event['date']} - ${event['location']}'),
                     trailing: IconButton(
                       icon: const Icon(Icons.bookmark),
                       onPressed: () {
-                        setState(() {
-                          savedEvents.removeAt(index); // having issues keeping this removed
-                        });
+                        _deleteSavedEvent(event['id'] as int); // <- id stays int
                       },
                     ),
                   ),

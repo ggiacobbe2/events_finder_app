@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
+import 'database_helper.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
 
   const ProfilePage({
-    Key? key,
+    super.key,
     required this.isDarkMode,
     required this.toggleTheme
-  }) : super(key: key);
+  });
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final dbHelper = DatabaseHelper();
   bool isEditing = false;
 
-  String name = '';
-  String email = '';
-  String phone = '';
-  String location = '';
-
+  int? profileId;
   late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
@@ -30,48 +28,47 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: name);
-    emailController = TextEditingController(text: email);
-    phoneController = TextEditingController(text: phone);
-    locationController = TextEditingController(text: location);
+    nameController = TextEditingController();
+    emailController = TextEditingController();
+    phoneController = TextEditingController();
+    locationController = TextEditingController();
+    _loadProfile();
   }
 
-  @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
-    locationController.dispose();
-    super.dispose();
+  void _loadProfile() async {
+    final profile = await dbHelper.getProfile();
+    if (profile != null) {
+      profileId = profile['id'] as int?;
+      nameController = TextEditingController(text: profile['name'] ?? '');
+      emailController = TextEditingController(text: profile['email'] ?? '');
+      phoneController = TextEditingController(text: profile['phone'] ?? '');
+      locationController = TextEditingController(text: profile['location'] ?? '');
+    }
+    setState(() {});
   }
 
-  void toggleEdit() {
-    setState(() {
-      if (isEditing) {
-        name = nameController.text;
-        email = emailController.text;
-        phone = phoneController.text;
-        location = locationController.text;
+  Future<void> _toggleEdit() async {
+    if (isEditing) {
+      Map<String, dynamic> newProfile = {
+        'name': nameController.text,
+        'email': emailController.text,
+        'phone': phoneController.text,
+        'location': locationController.text,
+      };
+
+      if (profileId == null) {
+        profileId = await dbHelper.addProfile(newProfile);
+      } else {
+        newProfile['id'] = profileId;
+        await dbHelper.updateProfile(newProfile);
       }
-      isEditing = !isEditing;
-    });
-  }
-
-  Widget buildProfileField({required String label, required TextEditingController controller, required IconData icon}) {
-    return TextField(
-      controller: controller,
-      enabled: isEditing,
-      decoration: InputDecoration(
-        prefixIcon: Icon(icon),
-        labelText: label,
-        border: const OutlineInputBorder(),
-      ),
-    );
+      _loadProfile();
+    }
+    setState(() => isEditing = !isEditing);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Profile'),
@@ -83,37 +80,33 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Card(
-              color: theme.cardColor,
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    buildProfileField(label: "Your Name", controller: nameController, icon: Icons.person),
-                    const SizedBox(height: 8),
-                    buildProfileField(label: "Email", controller: emailController, icon: Icons.email),
-                    const SizedBox(height: 8),
-                    buildProfileField(label: "Phone Number", controller: phoneController, icon: Icons.phone),
-                    const SizedBox(height: 8),
-                    buildProfileField(label: "Location", controller: locationController, icon: Icons.location_on),
-                    const SizedBox(height: 10),
-                    ElevatedButton.icon(
-                      onPressed: toggleEdit,
-                      icon: Icon(isEditing ? Icons.save : Icons.edit),
-                      label: Text(isEditing ? "Save" : "Edit Profile"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.cardColor,
-                        foregroundColor: theme.primaryColor,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            TextField(
+              controller: nameController,
+              enabled: isEditing,
+              decoration: const InputDecoration(labelText: 'Name'),
+            ),
+            TextField(
+              controller: emailController,
+              enabled: isEditing,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: phoneController,
+              enabled: isEditing,
+              decoration: const InputDecoration(labelText: 'Phone'),
+            ),
+            TextField(
+              controller: locationController,
+              enabled: isEditing,
+              decoration: const InputDecoration(labelText: 'Location'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _toggleEdit,
+              child: Text(isEditing ? 'Save Profile' : 'Edit Profile'),
             ),
             const SizedBox(height: 20),
             // might change formatting of these sections below
