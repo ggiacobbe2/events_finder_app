@@ -39,18 +39,6 @@ class DatabaseHelper {
       path,
       version: 2,
       onCreate: _onCreate,
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
-          await db.execute('''
-            CREATE TABLE savedTickets (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              title TEXT NOT NULL,
-              date TEXT NOT NULL,
-              location TEXT NOT NULL
-            )
-          ''');
-        }
-      },
     );
   }
 
