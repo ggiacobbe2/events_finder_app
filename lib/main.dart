@@ -5,6 +5,7 @@ import 'profile.dart';
 import 'category_page.dart';
 import 'all_events.dart';
 import 'event_detail_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,11 +21,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isDarkMode = false;
 
-  final Color lightPrimaryColor = const Color(0xFF009E62);
-  final Color darkPrimaryColor = const Color(0xFF10B073);
-  final Color lightBackgroundColor = const Color(0xFFFAFFF9);
+  final Color lightPrimaryColor = const Color.fromARGB(255, 57, 8, 147);
+  final Color darkPrimaryColor = const Color.fromARGB(255, 118, 131, 244);
+  final Color lightBackgroundColor = const Color.fromARGB(255, 237, 243, 236);
   final Color darkBackgroundColor = Colors.black;
-  final Color lightCardColor = const Color(0xFFF2F6F3);
+  final Color lightCardColor = const Color.fromARGB(255, 226, 232, 228);
   final Color darkCardColor = const Color(0xFF1E1E1E);
   final Color lightTextColor = const Color(0xFFFAFFF9);
   final Color darkTextColor = Colors.white;
@@ -217,7 +218,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
       appBar: AppBar(
         title: Text(
           'Find Your Next Event',
-          style: TextStyle(fontSize: 22),
+          style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w600),
         ),
         actions: [
           IconButton(
@@ -334,27 +335,29 @@ class _EventsHomePageState extends State<EventsHomePage> {
     return Scaffold(
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        selectedFontSize: 2,
+        unselectedFontSize: 2,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.home, size: 32),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.search, size: 32),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Saved',
+            icon: Icon(Icons.bookmark, size: 32),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.person, size: 32),
+            label: '',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 5, 104, 68),
+        selectedItemColor: widget.isDarkMode ? const Color.fromARGB(255, 66, 57, 192) : const Color.fromARGB(255, 27, 1, 74),
         unselectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,
       ),

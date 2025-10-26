@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SavedEventsPage extends StatefulWidget {
   final bool isDarkMode;
@@ -13,7 +14,7 @@ class SavedEventsPage extends StatefulWidget {
 
 class _SavedEventsPageState extends State<SavedEventsPage> {
   final dbHelper = DatabaseHelper();
-  List<Map<String, dynamic>> savedEvents = []; // <- dynamic, not String
+  List<Map<String, dynamic>> savedEvents = [];
 
   @override
   void initState() {
@@ -24,7 +25,7 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
   Future<void> _loadSavedEvents() async {
     final events = await dbHelper.getSavedEvents();
     setState(() {
-      savedEvents = events; // no casting needed
+      savedEvents = events;
     });
   }
 
@@ -37,7 +38,10 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Saved Events'),
+        title: Text(
+          'Your Saved Events',
+          style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w600),
+        ),
         actions: [
           IconButton(
             icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
@@ -61,4 +65,17 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
                   elevation: 3,
                   child: ListTile(
                     title: Text(event['title'] ?? ''),
-                    subtitle: Text('${event['
+                    subtitle: Text('${event['date']} - ${event['location']}'),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.bookmark),
+                      onPressed: () {
+                        _deleteSavedEvent(event['id'] as int);
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}

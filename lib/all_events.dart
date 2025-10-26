@@ -1,6 +1,6 @@
 final List<Map<String, dynamic>> allEvents = [
 
-  {'title': 'Rock Concert', 'date': '2025-10-20', 'location': 'New York', 'category': ['Music', 'Nightlife'], 'description': 'Live music performances from various rock artists.', 'image': 'rock_concert.jpg'},
+  {'title': 'Rock Concert', 'date': '2025-10-30', 'location': 'New York', 'category': ['Music', 'Nightlife'], 'description': 'Live music performances from various rock artists.', 'image': 'rock_concert.jpg'},
   {'title': 'Halloween Parade', 'date': '2025-10-31', 'location': 'Chicago', 'category': ['Family', 'Lifestyle'], 'description': 'Join the spooky fun with costumes and floats.', 'image': 'halloween_parade.jpg'},
   {'title': 'Jazz Night', 'date': '2025-11-05', 'location': 'Atlanta', 'category': ['Music', 'Art'], 'description': 'Enjoy an evening of smooth jazz with local musicians.', 'image': 'jazz_night.jpg'},
   {'title': 'Food Festival', 'date': '2025-11-15', 'location': 'Chicago', 'category': ['Food', 'Lifestyle', 'Family'], 'description': 'Taste dishes from top local and international chefs.', 'image': 'food_festival.jpg'},

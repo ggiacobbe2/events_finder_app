@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TicketPage extends StatefulWidget {
   final bool isDarkMode;
@@ -34,12 +35,15 @@ class _TicketPageState extends State<TicketPage> {
       savedTickets.removeWhere((ticket) => ticket['id'] == id);
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Tickets'),
+        title: Text(
+          'Your Tickets',
+          style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w600),
+        ),
         actions: [
           IconButton(
             icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
@@ -69,4 +73,11 @@ class _TicketPageState extends State<TicketPage> {
                       onPressed: () {
                         _deleteTicket(ticket['id'] as int);
                       },
-        
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}

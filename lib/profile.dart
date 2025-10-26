@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'ticket_page.dart';
 import 'database_helper.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
@@ -72,7 +73,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Profile'),
+        title: Text(
+          'Your Profile',
+          style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w600),
+        ),
         actions: [
           IconButton(
             icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
@@ -99,6 +103,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: InputDecoration(
                           labelText: 'Name',
                           border: OutlineInputBorder(),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: const Color.fromARGB(255, 164, 164, 164)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -108,6 +118,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: InputDecoration(
                           labelText: 'Email',
                           border: OutlineInputBorder(),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: const Color.fromARGB(255, 164, 164, 164)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -117,6 +133,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: InputDecoration(
                           labelText: 'Phone',
                           border: OutlineInputBorder(),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: const Color.fromARGB(255, 164, 164, 164)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -126,6 +148,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: InputDecoration(
                           labelText: 'Location',
                           border: OutlineInputBorder(),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: const Color.fromARGB(255, 164, 164, 164)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
