@@ -67,7 +67,7 @@ class _TicketPageState extends State<TicketPage> {
                   elevation: 3,
                   child: ListTile(
                     title: Text(ticket['title'] ?? ''),
-                    subtitle: Text('${ticket['date']} - ${ticket['location']}'),
+                    subtitle: Text('${ticket['location']}, ${ticket['date']}'),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () {

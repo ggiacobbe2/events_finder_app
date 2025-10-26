@@ -67,6 +67,7 @@ class _SearchPageState extends State<SearchPage> {
             event['location'] == selectedLocation;
 
         final eventDate = DateTime.tryParse(event['date'] ?? '');
+
         final matchesDateRange = selectedDateRange == null ||
             (eventDate != null &&
             eventDate.isAfter(selectedDateRange!.start.subtract(const Duration(days: 1))) &&
@@ -181,7 +182,7 @@ class _SearchPageState extends State<SearchPage> {
                           color: Theme.of(context).cardColor,
                           child: ListTile(
                             title: Text(event['title']),
-                            subtitle: Text('${event['location']} - $dateText'),
+                            subtitle: Text('${event['location']}, $dateText'),
                             trailing: IconButton(
                               icon: Icon(
                                 savedEventTitles.contains(event['title'])

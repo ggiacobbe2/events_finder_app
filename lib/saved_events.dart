@@ -60,12 +60,16 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
               itemCount: savedEvents.length,
               itemBuilder: (context, index) {
                 final event = savedEvents[index];
+                final eventDate = DateTime.tryParse(event['date'] ?? '');
+                final dateText = eventDate != null
+                    ? '${eventDate.month}/${eventDate.day}/${eventDate.year}'
+                    : 'date';
                 return Card(
                   color: Theme.of(context).cardColor,
                   elevation: 3,
                   child: ListTile(
                     title: Text(event['title'] ?? ''),
-                    subtitle: Text('${event['date']} - ${event['location']}'),
+                    subtitle: Text('${event['location']}, $dateText'),
                     trailing: IconButton(
                       icon: const Icon(Icons.bookmark),
                       onPressed: () {

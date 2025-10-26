@@ -339,22 +339,10 @@ class _EventsHomePageState extends State<EventsHomePage> {
         unselectedFontSize: 2,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 32),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search, size: 32),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark, size: 32),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 32),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home, size: 32), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.search, size: 32), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark, size: 32), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person, size: 32), label: ''),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: widget.isDarkMode ? const Color.fromARGB(255, 66, 57, 192) : const Color.fromARGB(255, 27, 1, 74),
