@@ -42,6 +42,17 @@ class _SearchPageState extends State<SearchPage> {
     'Seattle',
   ];
 
+  DateTime? parseEventDate(String? dateString) {
+    if (dateString == null) return null;
+    final parts = dateString.split('/');
+    if (parts.length != 3) return null;
+    final month = int.tryParse(parts[0]);
+    final day = int.tryParse(parts[1]);
+    final year = int.tryParse(parts[2]);
+    if (month == null || day == null || year == null) return null;
+    return DateTime(year, month, day);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -66,12 +77,12 @@ class _SearchPageState extends State<SearchPage> {
             selectedLocation == 'All' ||
             event['location'] == selectedLocation;
 
-        final eventDate = DateTime.tryParse(event['date'] ?? '');
+        final eventDate = parseEventDate(event['date']);
 
         final matchesDateRange = selectedDateRange == null ||
             (eventDate != null &&
-            eventDate.isAfter(selectedDateRange!.start.subtract(const Duration(days: 1))) &&
-            eventDate.isBefore(selectedDateRange!.end.add(const Duration(days: 1))));
+            !eventDate.isBefore(selectedDateRange!.start) &&
+            !eventDate.isAfter(selectedDateRange!.end));
 
         return matchesQuery && matchesLocation && matchesDateRange;
       }).toList();
