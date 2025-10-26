@@ -23,9 +23,9 @@ class _MyAppState extends State<MyApp> {
 
   final Color lightPrimaryColor = const Color.fromARGB(255, 57, 8, 147);
   final Color darkPrimaryColor = const Color.fromARGB(255, 118, 131, 244);
-  final Color lightBackgroundColor = const Color.fromARGB(255, 237, 243, 236);
+  final Color lightBackgroundColor = const Color.fromARGB(255, 240, 242, 239);
   final Color darkBackgroundColor = Colors.black;
-  final Color lightCardColor = const Color.fromARGB(255, 226, 232, 228);
+  final Color lightCardColor = const Color.fromARGB(255, 227, 228, 228);
   final Color darkCardColor = const Color(0xFF1E1E1E);
   final Color lightTextColor = const Color(0xFFFAFFF9);
   final Color darkTextColor = Colors.white;
