@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'all_events.dart';
 import 'event_detail_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryPage extends StatelessWidget {
   final String category;
@@ -36,7 +37,10 @@ class CategoryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('$category Events'),
+        title: Text(
+          '$category Events',
+          style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w600),
+        ),
         actions: [
           IconButton(
             icon: Icon(isDarkMode ? Icons.light_mode : Icons.nightlight_round),

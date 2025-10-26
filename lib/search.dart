@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'all_events.dart';
 import 'event_detail_page.dart';
 import 'database_helper.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SearchPage extends StatefulWidget {
   final bool isDarkMode;
@@ -80,7 +81,10 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search Events Near You'),
+        title: Text(
+          'Search Events Near You',
+          style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.w600),
+        ),
         actions: [
           IconButton(
             icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),

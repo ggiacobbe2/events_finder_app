@@ -37,7 +37,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
         actions: [
           IconButton(
             icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
