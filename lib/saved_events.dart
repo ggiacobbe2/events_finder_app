@@ -60,16 +60,14 @@ class _SavedEventsPageState extends State<SavedEventsPage> {
               itemCount: savedEvents.length,
               itemBuilder: (context, index) {
                 final event = savedEvents[index];
-                final eventDate = DateTime.tryParse(event['date'] ?? '');
-                final dateText = eventDate != null
-                    ? '${eventDate.month}/${eventDate.day}/${eventDate.year}'
-                    : 'date';
+                final dateText = event['date'] ?? ''; // just use the string directly
+
                 return Card(
                   color: Theme.of(context).cardColor,
                   elevation: 3,
                   child: ListTile(
                     title: Text(event['title'] ?? ''),
-                    subtitle: Text('${event['location']}, $dateText'),
+                    subtitle: Text('${event['location']}, $dateText'), // display directly
                     trailing: IconButton(
                       icon: const Icon(Icons.bookmark),
                       onPressed: () {

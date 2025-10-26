@@ -185,10 +185,7 @@ class _SearchPageState extends State<SearchPage> {
                       itemCount: filteredEvents.length,
                       itemBuilder: (context, index) {
                         final event = filteredEvents[index];
-                        final eventDate = DateTime.tryParse(event['date'] ?? '');
-                        final dateText = eventDate != null
-                            ? "${eventDate.month}/${eventDate.day}/${eventDate.year}"
-                            : event['date'];
+                        final dateText = event['date'] ?? '';
                         return Card(
                           color: Theme.of(context).cardColor,
                           child: ListTile(
