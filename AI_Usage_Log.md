@@ -16,7 +16,8 @@ Generated:
 How We Applied: Implemented this at the bottom of main.dart and modified it by passing the arguments "isDarkMode" & "toggleTheme".  
 Reflection: Learned how to build independent pages but still share certain behavior (such as light/dark mode).
 
-10/19
+
+10/19  
 Asked: How can we implement Flutter's built in DateRangePicker as one of our advanced filters?  
 Generated:
 ```
@@ -48,16 +49,8 @@ AND
 How We Applied: We implemented the DateRangePicker into our search bar as its own entity. This way, users can choose to use this advanced filtering on its own, by combining with another filter, or not at all.  
 Reflection: Learned how to implement a clickable icon that launches Flutter's built-in date range picker. Also learned more about formatting dates since they can tricky when it comes to queries & filtering.  
 
-10/24
-Asked: How can we take a certain amount of event data from our static list and insert it into our buildEventCard function?  
-Generated:
-```
-children: allEvents.take(5).map((event)
-```
-How We Applied: We implemented this into our carousel of event cards, so that we could use actual data and not placeholder data.  
-Reflection: Learned how to take and map information that has already been defined in our static data table and use it elsewhere in the app. Helps us reduce the need to define/duplicate data that has already been created.  
 
-10/22
+10/22  
 Asked: How can we map multiple tags to their respective categories?  
 Generated:
 ```
@@ -70,7 +63,18 @@ Generated:
 How We Applied: Used this to map multiple category tags to the appropriate category "folder".  
 Reflection: This sort of practice is good for code maintainability and also shows the importance of low coupling. If we add more tags or categories in the future, this code helps us easily adapt and adjust as little code as possible.  
 
-10/24
+
+10/24  
+Asked: How can we take a certain amount of event data from our static list and insert it into our buildEventCard function?  
+Generated:
+```
+children: allEvents.take(5).map((event)
+```
+How We Applied: We implemented this into our carousel of event cards, so that we could use actual data and not placeholder data.  
+Reflection: Learned how to take and map information that has already been defined in our static data table and use it elsewhere in the app. Helps us reduce the need to define/duplicate data that has already been created.  
+
+
+10/24  
 Asked: Having trouble with connecting the database & loading the profile. Help us load the profile if it already exists.  
 Generated:
 ```
@@ -89,7 +93,8 @@ Generated:
 How We Applied: We implemented this logic to our profile page to load any profile information if it already existed. This was also very helpful to the saved_events and ticket_page because we applied a very similar logic.  
 Reflection: Learned to load any stored information first and how to do so without interfering with the UI. It also helped us learn the overall sequence of events for fetching data, initializing controllers, and then setting the state for saving information.  
 
-10/26
+
+10/26  
 Asked: Having trouble parsing our date string correctly for the search.dart page. Help improve our parsing function so that it accurately filters events by date.  
 Generated:
 ```
