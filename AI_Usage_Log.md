@@ -49,6 +49,70 @@ AND
 How We Applied: We implemented the DateRangePicker into our search bar as its own entity. This way, users can choose to use this advanced filtering on its own, by combining with another filter, or not at all.  
 Reflection: Learned how to implement a clickable icon that launches Flutter's built-in date range picker. Also learned more about formatting dates since they can tricky when it comes to queries & filtering.  
 
+10/20
+Asked: How can we make the event details page support reserving tickets and storing them in the local database?
+Generated:
+```
+ElevatedButton(
+  onPressed: () async {
+    await DatabaseHelper().insertTicket({
+      'title': widget.event['title'] ?? '',
+      'date': widget.event['date'] ?? '',
+      'location': widget.event['location'] ?? '',
+    });
+
+    setState(() {
+      ticketReserved = true;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('One ticket reserved!')),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Theme.of(context).cardColor,
+    foregroundColor: Theme.of(context).primaryColor,
+    side: BorderSide(color: Theme.of(context).primaryColor),
+    padding: const EdgeInsets.symmetric(vertical: 16),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+  ),
+  child: Center(
+    child: Text(
+      'Reserve a Ticket',
+      style: TextStyle(fontSize: 16),
+    ),
+  ),
+),
+```
+
+How We Applied: We connected the “Reserve Ticket” button to our DatabaseHelper class, allowing users to store reserved tickets locally in the SQLite database.
+Reflection: Learned how to call async database operations within button presses, use setState() to reflect changes on the UI, and give user feedback using SnackBar.
+
+10/21
+Asked: How can we dynamically display event images and fall back to a placeholder if no image is available?
+Generated:
+```
+child: imageName == null
+  ? Container(
+      height: 220,
+      color: Theme.of(context).colorScheme.surfaceVariant,
+      alignment: Alignment.center,
+      child: const Icon(
+        Icons.photo,
+        size: 72,
+      ),
+    )
+  : Image.asset(
+      imageName,
+      width: double.infinity,
+      height: 220,
+      fit: BoxFit.cover,
+    ),
+```
+How We Applied: Added logic to check if an image file exists for each event and display a placeholder icon when no image is provided.
+Reflection: Learned to handle nullable image paths safely in Flutter and improved the user experience by avoiding crashes or blank areas in the UI.
 
 10/22  
 Asked: How can we map multiple tags to their respective categories?  
@@ -111,3 +175,5 @@ Generated:
 ```
 How We Applied: This helped us improve our filtering logic in our search.dart function. It allows the platform to compare date ranges for events safely without producing unnecessary errors.  
 Reflection: Learned more about safe, defensive coding, and how defining a robust function like this can be helpful for reusability throughout our code. It also helped us avoid any unnecessary  syntax/typo errors since the function is very particular.
+
+
